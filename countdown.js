@@ -1,132 +1,92 @@
-const countdownModule = (() => {
-    dayjs.extend(window.dayjs_plugin_customParseFormat);
-    dayjs.extend(window.dayjs_plugin_duration);
+import { schedules } from '../data/schedules.js';
+import { updateText, renderTodaySchedule } from './ui.js';
 
-    let countdownInterval = null;
+let countdownInterval;
 
-    const getCurrentSchedule = () => {
-        const now = dayjs();
-        const dayOfWeek = now.day(); // 0=Sun, 1=Mon, ..., 6=Sat
+function getScheduleForToday() {
+    const dayOfWeek = dayjs().day(); // Sunday = 0, Saturday = 6
+    switch (dayOfWeek) {
+        case 1: // Monday
+        case 4: // Thursday
+            return schedules.A;
+        case 2: // Tuesday
+        case 5: // Friday
+            return schedules.B;
+        case 3: // Wednesday
+            return schedules.W;
+        default: // Saturday, Sunday
+            return schedules.NONE;
+    }
+}
 
-        switch (dayOfWeek) {
-            case 1: // Monday
-            case 4: // Thursday
-                return window.schedules.aDay;
-            case 2: // Tuesday
-            case 5: // Friday
-                return window.schedules.bDay;
-            case 3: // Wednesday
-                return window.schedules.wednesday;
-            default: // Saturday, Sunday
-                return window.schedules.weekend;
-        }
-    };
+function formatTime(seconds) {
+    if (seconds < 0) seconds = 0;
+    const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+    const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+    const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+    return `${h}:${m}:${s}`;
+}
 
-    const findCurrentState = (schedule) => {
-        const now = dayjs();
-        let currentState = { type: 'ended', period: null, nextPeriod: schedule.periods[0] };
+function updateCountdown() {
+    const now = dayjs();
+    const todaySchedule = getScheduleForToday();
 
-        if (!schedule || schedule.periods.length === 0) {
-            return { type: 'weekend', period: null, nextPeriod: null };
-        }
+    if (todaySchedule.periods.length === 0) {
+        updateText('#countdown-status', 'No Classes Today!');
+        updateText('#countdown-period', 'Enjoy your day off!');
+        updateText('#countdown-timer', '00:00:00');
+        return;
+    }
 
-        for (let i = 0; i < schedule.periods.length; i++) {
-            const period = schedule.periods[i];
-            const start = dayjs(period.start, "h:mm A");
-            const end = dayjs(period.end, "h:mm A");
+    const firstPeriodStart = dayjs(todaySchedule.periods[0].start, 'H:mm');
+    if (now.isBefore(firstPeriodStart)) {
+        const diff = firstPeriodStart.diff(now, 'second');
+        updateText('#countdown-status', 'School Starts In');
+        updateText('#countdown-period', `First period is ${todaySchedule.periods[0].name}`);
+        updateText('#countdown-timer', formatTime(diff));
+        return;
+    }
 
-            if (now.isBefore(start)) {
-                currentState = { type: 'before_school', period: null, nextPeriod: schedule.periods[0] };
-                break;
-            }
+    for (let i = 0; i < todaySchedule.periods.length; i++) {
+        const period = todaySchedule.periods[i];
+        const start = dayjs(period.start, 'H:mm');
+        const end = dayjs(period.end, 'H:mm');
 
-            if (now.isAfter(start) && now.isBefore(end)) {
-                currentState = { type: 'in_progress', period: period, nextPeriod: schedule.periods[i + 1] || null };
-                break;
-            }
-        }
-        
-        if(currentState.type === 'ended'){
-             const lastPeriodEnd = dayjs(schedule.periods[schedule.periods.length - 1].end, "h:mm A");
-             if(now.isAfter(lastPeriodEnd)){
-                 currentState = { type: 'after_school', period: null, nextPeriod: null };
-             }
-        }
-
-        return currentState;
-    };
-
-    const update = () => {
-        const schedule = getCurrentSchedule();
-        const state = findCurrentState(schedule);
-        const now = dayjs();
-
-        let title = '', subtitle = '', targetTime = null, totalDuration = 0;
-
-        switch (state.type) {
-            case 'in_progress':
-                targetTime = dayjs(state.period.end, "h:mm A");
-                title = `${state.period.name} ends in:`;
-                subtitle = `Next: ${state.nextPeriod ? state.nextPeriod.name : 'School Ends'}`;
-                const periodStart = dayjs(state.period.start, "h:mm A");
-                totalDuration = targetTime.diff(periodStart, 'second');
-                break;
-            case 'before_school':
-                targetTime = dayjs(state.nextPeriod.start, "h:mm A");
-                title = `School starts in:`;
-                subtitle = `First period: ${state.nextPeriod.name}`;
-                break;
-            case 'after_school':
-                title = 'School is over for the day!';
-                subtitle = 'Enjoy your evening!';
-                break;
-            case 'weekend':
-                title = 'It\'s the weekend!';
-                subtitle = 'No classes today.';
-                break;
-            default: // ended
-                 title = 'School is over for the day!';
-                 subtitle = 'Enjoy your evening!';
+        if (now.isAfter(start) && now.isBefore(end)) {
+            const diff = end.diff(now, 'second');
+            updateText('#countdown-status', `${period.name} Ends In`);
+            const nextPeriod = todaySchedule.periods[i + 1];
+            updateText('#countdown-period', nextPeriod ? `Next: ${nextPeriod.name}` : 'School is over after this');
+            updateText('#countdown-timer', formatTime(diff));
+            return;
         }
 
-        window.uiModule.renderTodaySchedule(schedule, state.period ? state.period.name : null);
-
-        if (targetTime) {
-            const remaining = targetTime.diff(now, 'second');
-            if (remaining < 0) {
-                // If time is negative, force an update in a second
-                setTimeout(update, 1000);
+        const nextPeriod = todaySchedule.periods[i + 1];
+        if (nextPeriod) {
+            const nextStart = dayjs(nextPeriod.start, 'H:mm');
+            if (now.isAfter(end) && now.isBefore(nextStart)) {
+                const diff = nextStart.diff(now, 'second');
+                updateText('#countdown-status', 'Passing Period Ends In');
+                updateText('#countdown-period', `Next: ${nextPeriod.name}`);
+                updateText('#countdown-timer', formatTime(diff));
                 return;
             }
-            const duration = dayjs.duration(remaining, 'seconds');
-            const minutes = duration.minutes();
-            const seconds = duration.seconds();
-            window.uiModule.renderCountdown(title, subtitle, minutes, seconds);
-
-            if (state.type === 'in_progress' && totalDuration > 0) {
-                const elapsed = totalDuration - remaining;
-                const percentage = (elapsed / totalDuration) * 100;
-                window.uiModule.updateProgressBar(percentage);
-            } else {
-                 window.uiModule.updateProgressBar(0);
-            }
-        } else {
-            window.uiModule.renderCountdown(title, subtitle, 0, 0);
-            window.uiModule.updateProgressBar(100);
         }
-    };
+    }
 
-    const start = () => {
-        if (countdownInterval) {
-            clearInterval(countdownInterval);
-        }
-        update(); // initial call
-        countdownInterval = setInterval(update, 1000);
-    };
+    const lastPeriodEnd = dayjs(todaySchedule.periods[todaySchedule.periods.length - 1].end, 'H:mm');
+    if (now.isAfter(lastPeriodEnd)) {
+        updateText('#countdown-status', 'School Is Over!');
+        updateText('#countdown-period', 'See you tomorrow!');
+        updateText('#countdown-timer', '00:00:00');
+        return;
+    }
+}
 
-    return {
-        init: start
-    };
-})();
-
-window.countdownModule = countdownModule;
+export function initCountdown() {
+    const todaySchedule = getScheduleForToday();
+    document.getElementById('today-schedule-type').textContent = todaySchedule.name;
+    renderTodaySchedule(todaySchedule);
+    updateCountdown();
+    countdownInterval = setInterval(updateCountdown, 1000);
+}
