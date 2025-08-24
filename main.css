@@ -1,0 +1,27 @@
+/* Custom styles for elements that are harder to style with Tailwind */
+
+/* For the countdown timer text to prevent wrapping */
+#countdown-timer {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Custom styles for calendar */
+.calendar-day-name {
+    @apply text-center font-bold text-sm text-gray-500 dark:text-gray-400 p-2;
+}
+
+.calendar-day {
+    @apply relative text-center border border-gray-200 dark:border-gray-700 h-20 sm:h-24 transition-colors;
+}
+
+.calendar-day.other-month {
+    @apply text-gray-400 dark:text-gray-600 bg-gray-50 dark:bg-gray-800;
+}
+
+.calendar-day.today {
+    @apply bg-blue-100 dark:bg-blue-900 border-primary dark:border-accent font-bold;
+}
+
+.day-number {
+    @apply absolute top-1 right-1 sm:top-2 sm:right-2 text-xs sm:text-sm;
+}
