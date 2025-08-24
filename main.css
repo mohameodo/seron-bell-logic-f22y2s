@@ -1,27 +1,29 @@
-/* Custom styles for elements that are harder to style with Tailwind */
+/* Using a more modern font stack and Tailwind's config for customization is preferred,
+but for a simple CDN setup, we can define some global styles and theme variables here. */
 
-/* For the countdown timer text to prevent wrapping */
-#countdown-timer {
-    font-variant-numeric: tabular-nums;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
 }
 
-/* Custom styles for calendar */
+/* Custom styles for the calendar */
 .calendar-day-name {
-    @apply text-center font-bold text-sm text-gray-500 dark:text-gray-400 p-2;
+    @apply text-center font-bold text-slate-500 dark:text-slate-400 text-sm pb-2;
 }
 
-.calendar-day {
-    @apply relative text-center border border-gray-200 dark:border-gray-700 h-20 sm:h-24 transition-colors;
+.calendar-date {
+    @apply text-center p-2 rounded-lg transition-colors;
 }
 
-.calendar-day.other-month {
-    @apply text-gray-400 dark:text-gray-600 bg-gray-50 dark:bg-gray-800;
+.calendar-date.other-month {
+    @apply text-slate-300 dark:text-slate-600;
 }
 
-.calendar-day.today {
-    @apply bg-blue-100 dark:bg-blue-900 border-primary dark:border-accent font-bold;
+.calendar-date.current-day {
+    @apply bg-blue-600 text-white font-bold;
 }
 
-.day-number {
-    @apply absolute top-1 right-1 sm:top-2 sm:right-2 text-xs sm:text-sm;
+.calendar-date:not(.other-month):not(.current-day):hover {
+    @apply bg-slate-100 dark:bg-slate-700 cursor-pointer;
 }
