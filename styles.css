@@ -1,0 +1,43 @@
+/* Custom styles to complement Tailwind CSS */
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Add a subtle transition to the countdown timer for smoother updates */
+#countdown-timer {
+    transition: color 0.3s ease-in-out;
+}
+
+/* Custom scrollbar for a more modern look */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #2d3748; /* dark:bg-gray-700 */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #555;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #333;
+}
