@@ -6,126 +6,74 @@
     <title>Full Schedule - Class Countdown</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': '#005A9C',
-                        'secondary': '#B31B1B',
-                        'accent': '#F7C42F',
-                        'light-bg': '#F8F9FA',
-                        'light-card': '#FFFFFF',
-                        'light-text': '#212529',
-                        'dark-bg': '#1A202C',
-                        'dark-card': '#2D3748',
-                        'dark-text': '#E2E8F0',
-                    }
-                }
-            }
-        }
-    </script>
 </head>
-<body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-['Poppins',_sans-serif] transition-colors duration-300">
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 font-sans transition-colors duration-300">
 
     <div id="app-container" class="min-h-screen flex flex-col">
-
         <!-- Header -->
-        <header class="bg-light-card dark:bg-dark-card shadow-md sticky top-0 z-50">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <div class="flex items-center space-x-4">
-                        <img src="https://bell-logic.com/images/rmhslogo.png" alt="RMHS Logo" class="h-10 w-10">
-                        <a href="index.html" class="text-xl font-bold text-primary dark:text-accent">Class Countdown</a>
-                    </div>
-                    <nav class="hidden md:flex items-center space-x-4">
-                        <a href="index.html" class="px-3 py-2 rounded-md text-sm font-medium text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Dashboard</a>
-                        <a href="schedule.html" class="px-3 py-2 rounded-md text-sm font-medium text-primary dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Full Schedule</a>
-                        <a href="calendar.html" class="px-3 py-2 rounded-md text-sm font-medium text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Calendar</a>
-                        <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
-                            <i class="fas fa-moon text-lg text-primary dark:hidden"></i>
-                            <i class="fas fa-sun text-lg text-accent hidden dark:inline"></i>
-                        </button>
-                    </nav>
-                    <div class="md:hidden flex items-center">
-                        <button id="mobile-menu-button" class="p-2 rounded-md">
-                            <i class="fas fa-bars text-xl"></i>
-                        </button>
-                    </div>
+        <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-school text-2xl text-blue-600 dark:text-blue-400"></i>
+                    <a href="/" class="text-2xl font-bold text-slate-900 dark:text-white">Class Countdown</a>
                 </div>
-            </div>
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="md:hidden hidden bg-light-card dark:bg-dark-card border-t border-gray-200 dark:border-gray-700">
-                <a href="index.html" class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Dashboard</a>
-                <a href="schedule.html" class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Full Schedule</a>
-                <a href="calendar.html" class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Calendar</a>
-                <div class="px-4 py-2">
-                     <button id="theme-toggle-mobile" class="w-full text-left flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
-                        <i class="fas fa-moon text-lg text-primary dark:hidden"></i>
-                        <i class="fas fa-sun text-lg text-accent hidden dark:inline"></i>
-                        <span class="dark:hidden">Dark Mode</span>
-                        <span class="hidden dark:inline">Light Mode</span>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold">Dashboard</a>
+                    <a href="schedule.html" class="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold">Full Schedule</a>
+                    <a href="calendar.html" class="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold">Calendar</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 text-xl">
+                        <i class="fas fa-sun" id="theme-icon-light"></i>
+                        <i class="fas fa-moon hidden" id="theme-icon-dark"></i>
+                    </button>
+                    <button id="mobile-menu-button" class="md:hidden text-slate-600 dark:text-slate-300 text-2xl">
+                        <i class="fas fa-bars"></i>
                     </button>
                 </div>
+            </nav>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-2">
+                <a href="index.html" class="block text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold py-2">Dashboard</a>
+                <a href="schedule.html" class="block text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold py-2">Full Schedule</a>
+                <a href="calendar.html" class="block text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold py-2">Calendar</a>
             </div>
         </header>
 
         <!-- Main Content -->
-        <main class="flex-grow container mx-auto p-4 sm:p-6 lg:p-8">
-            <h1 class="text-3xl sm:text-4xl font-bold text-center mb-8">Full Bell Schedules</h1>
-
+        <main class="flex-grow container mx-auto px-6 py-8">
+            <h1 class="text-4xl font-bold text-center mb-8">Weekly Bell Schedules</h1>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
                 <!-- A Day Schedule -->
-                <div class="bg-light-card dark:bg-dark-card p-6 rounded-xl shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 flex items-center text-red-600"><i class="fas fa-calendar-day mr-3"></i>A Day Schedule</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Mondays & Thursdays</p>
-                    <div id="a-day-schedule" class="space-y-3"></div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center text-red-500"><i class="fas fa-calendar-day mr-3"></i>A Day Schedule</h2>
+                    <p class="text-slate-500 dark:text-slate-400 mb-4">Monday & Thursday</p>
+                    <div id="schedule-a" class="space-y-3"></div>
                 </div>
 
                 <!-- B Day Schedule -->
-                <div class="bg-light-card dark:bg-dark-card p-6 rounded-xl shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 flex items-center text-blue-600"><i class="fas fa-calendar-day mr-3"></i>B Day Schedule</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Tuesdays & Fridays</p>
-                    <div id="b-day-schedule" class="space-y-3"></div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center text-blue-500"><i class="fas fa-calendar-day mr-3"></i>B Day Schedule</h2>
+                    <p class="text-slate-500 dark:text-slate-400 mb-4">Tuesday & Friday</p>
+                    <div id="schedule-b" class="space-y-3"></div>
                 </div>
 
                 <!-- Wednesday Schedule -->
-                <div class="bg-light-card dark:bg-dark-card p-6 rounded-xl shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 flex items-center text-green-600"><i class="fas fa-calendar-day mr-3"></i>Wednesday Schedule</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Shortened Day</p>
-                    <div id="wednesday-schedule" class="space-y-3"></div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center text-green-500"><i class="fas fa-calendar-day mr-3"></i>Wednesday Schedule</h2>
+                    <p class="text-slate-500 dark:text-slate-400 mb-4">Shortened Day</p>
+                    <div id="schedule-w" class="space-y-3"></div>
                 </div>
-
             </div>
         </main>
-
-        <!-- Footer -->
-        <footer class="mt-auto">
-            <a href="https://seron.dev" target="_blank" rel="noopener noreferrer" id="seron-pill" class="fixed bottom-4 right-4 bg-black text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg hover:bg-gray-800 transition-all transform hover:scale-105 z-50">
-                Made by Seron
-            </a>
-        </footer>
-
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-    <script src="js/data/schedules.js"></script>
-    <script src="js/modules/ui.js"></script>
-    <script src="js/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Use the same render function but target different containers
-            const { renderFullSchedule } = window.uiModule;
-            renderFullSchedule(window.schedules.aDay, document.getElementById('a-day-schedule'));
-            renderFullSchedule(window.schedules.bDay, document.getElementById('b-day-schedule'));
-            renderFullSchedule(window.schedules.wednesday, document.getElementById('wednesday-schedule'));
-        });
-    </script>
+    <a href="https://seron.dev" target="_blank" rel="noopener noreferrer" class="fixed bottom-4 right-4 bg-black text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg hover:bg-gray-800 transition-colors z-50">
+        Made by Seron
+    </a>
+
+    <script type="module" src="js/schedule-page.js"></script>
 </body>
 </html>
