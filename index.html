@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,122 +8,152 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/customParseFormat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/relativeTime.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#005A9C', // RMHS Blue
+                        'secondary': '#B31B1B', // RMHS Red
+                        'accent': '#F7C42F', // Gold accent
+                        'light-bg': '#F8F9FA',
+                        'light-card': '#FFFFFF',
+                        'light-text': '#212529',
+                        'dark-bg': '#1A202C',
+                        'dark-card': '#2D3748',
+                        'dark-text': '#E2E8F0',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
+<body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-['Poppins',_sans-serif] transition-colors duration-300">
 
     <div id="app-container" class="min-h-screen flex flex-col">
+
         <!-- Header -->
-        <header class="sticky top-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg z-20 border-b border-gray-200 dark:border-gray-700">
+        <header class="bg-light-card dark:bg-dark-card shadow-md sticky top-0 z-50">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
                     <div class="flex items-center space-x-4">
                         <img src="https://bell-logic.com/images/rmhslogo.png" alt="RMHS Logo" class="h-10 w-10">
-                        <h1 class="text-xl font-bold text-gray-900 dark:text-white">Red Mountain High</h1>
+                        <a href="index.html" class="text-xl font-bold text-primary dark:text-accent">Class Countdown</a>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <nav class="hidden md:flex space-x-6">
-                            <a href="index.html" class="text-sm font-medium text-blue-600 dark:text-blue-400">Dashboard</a>
-                            <a href="schedule.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Full Schedule</a>
-                        </nav>
-                        <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                            <i class="fas fa-sun text-lg" id="theme-icon-light"></i>
-                            <i class="fas fa-moon text-lg hidden" id="theme-icon-dark"></i>
+                    <nav class="hidden md:flex items-center space-x-4">
+                        <a href="index.html" class="px-3 py-2 rounded-md text-sm font-medium text-primary dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Dashboard</a>
+                        <a href="schedule.html" class="px-3 py-2 rounded-md text-sm font-medium text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Full Schedule</a>
+                        <a href="calendar.html" class="px-3 py-2 rounded-md text-sm font-medium text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Calendar</a>
+                        <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                            <i class="fas fa-moon text-lg text-primary dark:hidden"></i>
+                            <i class="fas fa-sun text-lg text-accent hidden dark:inline"></i>
+                        </button>
+                    </nav>
+                     <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-button" class="p-2 rounded-md">
+                            <i class="fas fa-bars text-xl"></i>
                         </button>
                     </div>
+                </div>
+            </div>
+             <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden hidden bg-light-card dark:bg-dark-card border-t border-gray-200 dark:border-gray-700">
+                <a href="index.html" class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Dashboard</a>
+                <a href="schedule.html" class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Full Schedule</a>
+                <a href="calendar.html" class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Calendar</a>
+                <div class="px-4 py-2">
+                     <button id="theme-toggle-mobile" class="w-full text-left flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fas fa-moon text-lg text-primary dark:hidden"></i>
+                        <i class="fas fa-sun text-lg text-accent hidden dark:inline"></i>
+                        <span class="dark:hidden">Dark Mode</span>
+                        <span class="hidden dark:inline">Light Mode</span>
+                    </button>
                 </div>
             </div>
         </header>
 
         <!-- Main Content -->
-        <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main class="flex-grow container mx-auto p-4 sm:p-6 lg:p-8">
             
-            <!-- Alerts -->
-            <div id="alert-container">
-                <div id="lockdown-alert" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md mb-6" role="alert">
-                    <div class="flex">
-                        <div class="py-1"><i class="fas fa-lock text-xl mr-4"></i></div>
-                        <div>
-                            <p class="font-bold">Lockdown</p>
-                            <p class="text-sm">The campus is on Lockdown. Initiate Lockdown procedures and WAIT for the All Clear.</p>
-                        </div>
-                    </div>
+            <!-- Alert Section -->
+            <div id="alert-container" class="mb-6"></div>
+
+            <!-- Countdown Timer -->
+            <div id="countdown-card" class="bg-light-card dark:bg-dark-card p-6 sm:p-8 rounded-xl shadow-lg text-center mb-8">
+                <h2 id="countdown-title" class="text-2xl sm:text-3xl font-bold text-primary dark:text-accent mb-2">Loading Schedule...</h2>
+                <p id="countdown-subtitle" class="text-lg text-gray-600 dark:text-gray-400 mb-4">Please wait a moment</p>
+                <div id="countdown-timer" class="text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tighter my-4">
+                    <span id="minutes">--</span>:<span id="seconds">--</span>
                 </div>
-                <div id="all-clear-alert" class="hidden bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mb-6" role="alert">
-                     <div class="flex">
-                        <div class="py-1"><i class="fas fa-check-circle text-xl mr-4"></i></div>
-                        <div>
-                            <p class="font-bold">All Clear</p>
-                            <p class="text-sm">Red Mountain High</p>
-                        </div>
-                    </div>
+                <div id="progress-bar-container" class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 mt-4 overflow-hidden">
+                    <div id="progress-bar" class="bg-primary dark:bg-accent h-4 rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Left Column: Countdown -->
-                <div class="lg:col-span-2">
-                    <div class="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-lg h-full flex flex-col justify-center text-center">
-                        <h2 id="countdown-title" class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-2">Loading...</h2>
-                        <p id="countdown-period" class="text-lg text-gray-500 dark:text-gray-400 mb-6">Please wait while we calculate the time.</p>
-                        <div id="countdown-timer" class="text-6xl sm:text-8xl font-black text-gray-800 dark:text-white tracking-tighter tabular-nums">
-                            00:00:00
-                        </div>
-                        <div class="mt-6 text-sm text-gray-500 dark:text-gray-400">
-                            <span id="current-time"></span>
+                <!-- Left Column / Main on mobile -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Today's Schedule -->
+                    <div class="bg-light-card dark:bg-dark-card p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-calendar-day mr-3 text-primary dark:text-accent"></i>Today's Schedule</h3>
+                        <div id="today-schedule-container" class="space-y-3">
+                            <p>Loading today's schedule...</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Info Cards -->
-                <div class="space-y-6">
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg">
-                        <h3 class="font-bold text-lg mb-3 flex items-center"><i class="fas fa-quote-left mr-2 text-blue-500"></i>Quote of the Day</h3>
-                        <blockquote class="text-gray-600 dark:text-gray-300 italic border-l-2 border-blue-500 pl-4">
-                            “The future depends on what you do today.”
-                            <cite class="block not-italic text-right mt-2 text-sm">— Mahatma Gandhi</cite>
-                        </blockquote>
+                <!-- Right Column / Sidebar -->
+                <div class="space-y-8">
+                     <!-- Weather Widget -->
+                    <div class="bg-light-card dark:bg-dark-card p-6 rounded-xl shadow-lg">
+                        <div id="weather-container" class="flex items-center">
+                             <div class="w-full text-center">
+                                <i class="fas fa-spinner fa-spin text-3xl text-gray-500"></i>
+                                <p class="mt-2">Loading Weather...</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg">
-                        <h3 class="font-bold text-lg mb-3 flex items-center"><i class="fas fa-cloud-sun mr-2 text-yellow-500"></i>Weather</h3>
-                        <p class="text-gray-600 dark:text-gray-300">🌡️ Mesa, AZ: <span class="font-semibold">78°F</span></p>
+
+                    <!-- Quote of the Day -->
+                    <div class="bg-light-card dark:bg-dark-card p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-quote-left mr-3 text-primary dark:text-accent"></i>Quote of the Day</h3>
+                        <div id="quote-container">
+                            <p class="italic">Loading quote...</p>
+                            <p class="text-right mt-2 font-semibold">- ...</p>
+                        </div>
                     </div>
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg text-center">
-                        <h3 class="font-bold text-lg mb-3">Feedback & Quotes</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">Have an issue or a feature suggestion? Let us know!</p>
-                        <a href="https://forms.gle/kcRoka4jgTCJEbss6" target="_blank" rel="noopener noreferrer" class="inline-block bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105">
-                            Submit Feedback
+
+                     <!-- Feedback/Links -->
+                    <div class="bg-light-card dark:bg-dark-card p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-link mr-3 text-primary dark:text-accent"></i>Quick Links</h3>
+                        <a href="https://forms.gle/kcRoka4jgTCJEbss6" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-secondary hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105">
+                            <i class="fas fa-paper-plane mr-2"></i> Submit Feedback/Quotes
                         </a>
                     </div>
                 </div>
             </div>
-
-            <!-- Upcoming Schedule -->
-            <div class="mt-8 bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-lg">
-                <h2 class="text-2xl font-bold mb-4">Today's Schedule</h2>
-                <div id="schedule-preview" class="space-y-4">
-                    <!-- Schedule items will be injected here by JavaScript -->
-                    <p>Loading schedule...</p>
-                </div>
-                 <div class="mt-6 text-center">
-                    <a href="schedule.html" class="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
-                        View Full Schedule <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                </div>
-            </div>
         </main>
+
+        <!-- Footer -->
+        <footer class="mt-auto">
+            <a href="https://seron.dev" target="_blank" rel="noopener noreferrer" id="seron-pill" class="fixed bottom-4 right-4 bg-black text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg hover:bg-gray-800 transition-all transform hover:scale-105 z-50">
+                Made by Seron
+            </a>
+        </footer>
+
     </div>
 
-    <a href="https://seron.dev" target="_blank" class="fixed bottom-4 right-4 bg-gray-800 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg hover:bg-black transition-all duration-300 opacity-80 hover:opacity-100">
-        Made by Seron
-    </a>
-
-    <script src="js/schedule-data.js"></script>
-    <script src="js/ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/customParseFormat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/duration.js"></script>
+    <script src="js/data/schedules.js"></script>
+    <script src="js/data/quotes.js"></script>
+    <script src="js/modules/ui.js"></script>
+    <script src="js/modules/weather.js"></script>
+    <script src="js/modules/countdown.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
