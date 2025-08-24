@@ -1,99 +1,130 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Schedule - Red Mountain High</title>
+    <title>Full Schedule - Class Countdown</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/customParseFormat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#005A9C',
+                        'secondary': '#B31B1B',
+                        'accent': '#F7C42F',
+                        'light-bg': '#F8F9FA',
+                        'light-card': '#FFFFFF',
+                        'light-text': '#212529',
+                        'dark-bg': '#1A202C',
+                        'dark-card': '#2D3748',
+                        'dark-text': '#E2E8F0',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
+<body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-['Poppins',_sans-serif] transition-colors duration-300">
 
     <div id="app-container" class="min-h-screen flex flex-col">
+
         <!-- Header -->
-        <header class="sticky top-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg z-20 border-b border-gray-200 dark:border-gray-700">
+        <header class="bg-light-card dark:bg-dark-card shadow-md sticky top-0 z-50">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
                     <div class="flex items-center space-x-4">
                         <img src="https://bell-logic.com/images/rmhslogo.png" alt="RMHS Logo" class="h-10 w-10">
-                        <h1 class="text-xl font-bold text-gray-900 dark:text-white">Red Mountain High</h1>
+                        <a href="index.html" class="text-xl font-bold text-primary dark:text-accent">Class Countdown</a>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <nav class="hidden md:flex space-x-6">
-                            <a href="index.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</a>
-                            <a href="schedule.html" class="text-sm font-medium text-blue-600 dark:text-blue-400">Full Schedule</a>
-                        </nav>
-                        <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                            <i class="fas fa-sun text-lg" id="theme-icon-light"></i>
-                            <i class="fas fa-moon text-lg hidden" id="theme-icon-dark"></i>
+                    <nav class="hidden md:flex items-center space-x-4">
+                        <a href="index.html" class="px-3 py-2 rounded-md text-sm font-medium text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Dashboard</a>
+                        <a href="schedule.html" class="px-3 py-2 rounded-md text-sm font-medium text-primary dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Full Schedule</a>
+                        <a href="calendar.html" class="px-3 py-2 rounded-md text-sm font-medium text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Calendar</a>
+                        <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                            <i class="fas fa-moon text-lg text-primary dark:hidden"></i>
+                            <i class="fas fa-sun text-lg text-accent hidden dark:inline"></i>
+                        </button>
+                    </nav>
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-button" class="p-2 rounded-md">
+                            <i class="fas fa-bars text-xl"></i>
                         </button>
                     </div>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden hidden bg-light-card dark:bg-dark-card border-t border-gray-200 dark:border-gray-700">
+                <a href="index.html" class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Dashboard</a>
+                <a href="schedule.html" class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Full Schedule</a>
+                <a href="calendar.html" class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700">Calendar</a>
+                <div class="px-4 py-2">
+                     <button id="theme-toggle-mobile" class="w-full text-left flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fas fa-moon text-lg text-primary dark:hidden"></i>
+                        <i class="fas fa-sun text-lg text-accent hidden dark:inline"></i>
+                        <span class="dark:hidden">Dark Mode</span>
+                        <span class="hidden dark:inline">Light Mode</span>
+                    </button>
                 </div>
             </div>
         </header>
 
         <!-- Main Content -->
-        <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-lg">
-                <h1 class="text-3xl font-bold mb-2">Bell Schedule</h1>
-                <p class="text-gray-500 dark:text-gray-400 mb-6">Full schedule for a regular school day.</p>
-                
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                        <thead class="bg-gray-50 dark:bg-gray-700">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Period</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Start Time</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">End Time</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Duration</th>
-                            </tr>
-                        </thead>
-                        <tbody id="schedule-table-body" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                            <!-- Rows will be injected by JavaScript -->
-                        </tbody>
-                    </table>
+        <main class="flex-grow container mx-auto p-4 sm:p-6 lg:p-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-center mb-8">Full Bell Schedules</h1>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- A Day Schedule -->
+                <div class="bg-light-card dark:bg-dark-card p-6 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center text-red-600"><i class="fas fa-calendar-day mr-3"></i>A Day Schedule</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Mondays & Thursdays</p>
+                    <div id="a-day-schedule" class="space-y-3"></div>
                 </div>
+
+                <!-- B Day Schedule -->
+                <div class="bg-light-card dark:bg-dark-card p-6 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center text-blue-600"><i class="fas fa-calendar-day mr-3"></i>B Day Schedule</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Tuesdays & Fridays</p>
+                    <div id="b-day-schedule" class="space-y-3"></div>
+                </div>
+
+                <!-- Wednesday Schedule -->
+                <div class="bg-light-card dark:bg-dark-card p-6 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center text-green-600"><i class="fas fa-calendar-day mr-3"></i>Wednesday Schedule</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Shortened Day</p>
+                    <div id="wednesday-schedule" class="space-y-3"></div>
+                </div>
+
             </div>
         </main>
+
+        <!-- Footer -->
+        <footer class="mt-auto">
+            <a href="https://seron.dev" target="_blank" rel="noopener noreferrer" id="seron-pill" class="fixed bottom-4 right-4 bg-black text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg hover:bg-gray-800 transition-all transform hover:scale-105 z-50">
+                Made by Seron
+            </a>
+        </footer>
+
     </div>
 
-    <a href="https://seron.dev" target="_blank" class="fixed bottom-4 right-4 bg-gray-800 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg hover:bg-black transition-all duration-300 opacity-80 hover:opacity-100">
-        Made by Seron
-    </a>
-
-    <script src="js/schedule-data.js"></script>
-    <script src="js/ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="js/data/schedules.js"></script>
+    <script src="js/modules/ui.js"></script>
+    <script src="js/main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            dayjs.extend(window.dayjs_plugin_customParseFormat);
-
-            const tableBody = document.getElementById('schedule-table-body');
-            const schedule = schedules.regular; // Use the regular schedule
-
-            if (tableBody && schedule) {
-                schedule.forEach(period => {
-                    const startTime = dayjs(period.start, 'HH:mm');
-                    const endTime = dayjs(period.end, 'HH:mm');
-                    const duration = endTime.diff(startTime, 'minute');
-
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${period.name}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">${startTime.format('h:mm A')}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">${endTime.format('h:mm A')}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">${duration} minutes</td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            } else {
-                tableBody.innerHTML = '<tr><td colspan="4" class="text-center py-4">Could not load schedule.</td></tr>';
-            }
+            // Use the same render function but target different containers
+            const { renderFullSchedule } = window.uiModule;
+            renderFullSchedule(window.schedules.aDay, document.getElementById('a-day-schedule'));
+            renderFullSchedule(window.schedules.bDay, document.getElementById('b-day-schedule'));
+            renderFullSchedule(window.schedules.wednesday, document.getElementById('wednesday-schedule'));
         });
     </script>
 </body>
