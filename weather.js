@@ -1,36 +1,27 @@
-const weatherModule = (() => {
-    // IMPORTANT: Replace "YOUR_API_KEY" with your actual OpenWeatherMap API key.
-    const API_KEY = 'YOUR_API_KEY'; 
-    const CITY = 'Mesa';
-    const STATE_CODE = 'AZ';
-    const COUNTRY_CODE = 'US';
-    const UNITS = 'imperial'; // for Fahrenheit
+import { updateText } from './ui.js';
 
-    const fetchWeather = async () => {
-        if (API_KEY === 'YOUR_API_KEY') {
-            console.error("OpenWeatherMap API key is missing. Please add it to js/modules/weather.js");
-            window.uiModule.renderWeatherError();
-            return;
+const API_URL = "https://api.open-meteo.com/v1/forecast?latitude=33.42&longitude=-111.82&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph";
+
+export async function fetchWeather() {
+    const weatherContainer = document.getElementById('weather-container');
+    try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+            throw new Error('Weather data not available');
         }
+        const data = await response.json();
+        const temp = Math.round(data.current_weather.temperature);
+        
+        weatherContainer.innerHTML = `
+            <p class="text-5xl font-bold">${temp}<span class="text-3xl">°F</span></p>
+            <p class="text-slate-500 dark:text-slate-400">Feels like a great day!</p>
+        `;
 
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${CITY},${STATE_CODE},${COUNTRY_CODE}&appid=${API_KEY}&units=${UNITS}`;
-
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            window.uiModule.renderWeather(data);
-        } catch (error) {
-            console.error("Error fetching weather data:", error);
-            window.uiModule.renderWeatherError();
-        }
-    };
-
-    return {
-        init: fetchWeather
-    };
-})();
-
-window.weatherModule = weatherModule;
+    } catch (error) {
+        console.error("Failed to fetch weather:", error);
+         weatherContainer.innerHTML = `
+            <p class="text-2xl font-bold">N/A</p>
+            <p class="text-slate-500 dark:text-slate-400">Could not load weather.</p>
+        `;
+    }
+}
