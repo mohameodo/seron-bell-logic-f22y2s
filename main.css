@@ -1,29 +1,10 @@
-/* Using a more modern font stack and Tailwind's config for customization is preferred,
-but for a simple CDN setup, we can define some global styles and theme variables here. */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
-
+/* Custom base styles */
 body {
-    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom styles for the calendar */
-.calendar-day-name {
-    @apply text-center font-bold text-slate-500 dark:text-slate-400 text-sm pb-2;
-}
-
-.calendar-date {
-    @apply text-center p-2 rounded-lg transition-colors;
-}
-
-.calendar-date.other-month {
-    @apply text-slate-300 dark:text-slate-600;
-}
-
-.calendar-date.current-day {
-    @apply bg-blue-600 text-white font-bold;
-}
-
-.calendar-date:not(.other-month):not(.current-day):hover {
-    @apply bg-slate-100 dark:bg-slate-700 cursor-pointer;
+/* Add a smooth transition for the progress bar width */
+#progress-bar {
+    transition: width 0.5s ease-in-out;
 }
